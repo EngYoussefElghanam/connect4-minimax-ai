@@ -1,24 +1,22 @@
-"""Candidate-points heuristic."""
-from __future__ import annotations
+"""Heuristic 2: candidate points. A window with discs of only one player
+is still completable by that player; more discs = closer to a four."""
 
 from connect4.board import Board
-from connect4.ai.heuristics.base import Heuristic
+from connect4.ai.heuristics.base import Heuristic, window_counts
+
+# points for a window holding n own discs and no opponent disc
+DISC_POINTS = {1: 1, 2: 5, 3: 20}
 
 
 class OpenWindowsHeuristic(Heuristic):
-    """For every 4-cell window containing discs of ONE player only (rest empty),
-    add a value that grows with the number of discs (1, 2, 3). Windows containing
-    both players' discs are dead and count for nobody. AI windows add, human windows subtract."""
     name = "open_windows"
 
-    def __init__(self, weight: float = 1.0, window_values: tuple[float, float, float] = (1, 4, 16)) -> None:
-        # TODO: store weight and the value of a window holding 1 / 2 / 3 discs
-        raise NotImplementedError
-
-    def evaluate(self, board: Board) -> float:
-        # TODO
-        raise NotImplementedError
-
     def breakdown(self, board: Board) -> dict[str, float]:
-        # TODO
-        raise NotImplementedError
+        ai_pts = human_pts = 0
+        for _, ai, hu in window_counts(board):
+            if hu == 0 and ai in DISC_POINTS:
+                ai_pts += DISC_POINTS[ai]
+            elif ai == 0 and hu in DISC_POINTS:
+                human_pts += DISC_POINTS[hu]
+        return {"ai_open_windows": self.weight * ai_pts,
+                "human_open_windows": -self.weight * human_pts}

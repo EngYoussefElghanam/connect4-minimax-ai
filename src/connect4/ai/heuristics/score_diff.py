@@ -1,22 +1,15 @@
-"""Baseline heuristic: current score difference."""
-from __future__ import annotations
+"""Heuristic 1: difference in connected-fours (the real game objective)."""
 
+from connect4 import config
 from connect4.board import Board
+from connect4.scoring import count_connect_fours
 from connect4.ai.heuristics.base import Heuristic
 
 
 class ScoreDifferenceHeuristic(Heuristic):
-    """(AI connected-fours) - (human connected-fours), scaled by a weight."""
     name = "score_diff"
 
-    def __init__(self, weight: float = 1.0) -> None:
-        # TODO
-        raise NotImplementedError
-
-    def evaluate(self, board: Board) -> float:
-        # TODO
-        raise NotImplementedError
-
     def breakdown(self, board: Board) -> dict[str, float]:
-        # TODO
-        raise NotImplementedError
+        diff = (count_connect_fours(board, config.AI)
+                - count_connect_fours(board, config.HUMAN))
+        return {"score_diff": self.weight * diff}
