@@ -19,5 +19,6 @@ ALL_HEURISTICS: dict[str, type[Heuristic]] = {
 
 def get_heuristic(name: str) -> Heuristic:
     """Instantiate a heuristic by registry name. Raises ValueError for unknown names."""
-    # TODO
-    raise NotImplementedError
+    if name not in ALL_HEURISTICS:
+        raise ValueError(f"Unknown heuristic '{name}'. Choose from: {sorted(ALL_HEURISTICS)}")
+    return ALL_HEURISTICS[name]()
