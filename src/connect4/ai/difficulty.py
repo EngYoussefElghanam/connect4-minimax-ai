@@ -1,4 +1,4 @@
-"""Difficulty levels and K (search depth) validation."""
+"""Search depth choices and input validation."""
 from __future__ import annotations
 
 from enum import Enum
@@ -12,19 +12,22 @@ class Difficulty(Enum):
     HARD = "HARD"
 
 
-def k_for_difficulty(difficulty: Difficulty) -> int:
-    """Map a difficulty level to its K using config.DIFFICULTY_K."""
-    # TODO
-    raise NotImplementedError
-
-
 def validate_k(k: int) -> int:
-    """Return k if config.MIN_K <= k <= config.MAX_K and k is an int; otherwise raise ValueError."""
-    # TODO
-    raise NotImplementedError
+    if type(k) is not int or not config.MIN_K <= k <= config.MAX_K:
+        raise ValueError(f"K must be an integer from {config.MIN_K} to {config.MAX_K}")
+    return k
+
+
+def k_for_difficulty(difficulty: Difficulty) -> int:
+    if not isinstance(difficulty, Difficulty):
+        raise ValueError("difficulty must be a Difficulty enum")
+    return validate_k(config.DIFFICULTY_K[difficulty.value])
 
 
 def difficulty_from_name(name: str) -> Difficulty:
-    """Case-insensitive lookup ('easy', 'Medium', ...). Raises ValueError if unknown."""
-    # TODO
-    raise NotImplementedError
+    if not isinstance(name, str):
+        raise ValueError("difficulty name must be a string")
+    try:
+        return Difficulty[name.strip().upper()]
+    except KeyError as exc:
+        raise ValueError(f"unknown difficulty: {name!r}") from exc
