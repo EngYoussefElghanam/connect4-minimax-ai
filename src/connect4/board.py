@@ -3,8 +3,6 @@
 Rows are indexed from top to bottom; columns are zero-based. String fixtures
 are intentionally *not* gravity-validated so partial/scoring diagrams work.
 """
-from __future__ import annotations
-
 from connect4 import config
 
 
