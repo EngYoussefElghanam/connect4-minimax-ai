@@ -1,10 +1,7 @@
-"""Board representation.
+"""Mutable Connect 4 board with gravity and independent child positions.
 
-Conventions (tests rely on these):
-  * grid[row][col], row 0 is the TOP row, row ROWS-1 is the BOTTOM row.
-  * Columns are 0-based internally (the UI converts from/to 1-based).
-  * Cell values come from config: EMPTY, HUMAN, AI.
-  * String form: one string per row, top to bottom, '.' empty, 'H' human, 'A' AI.
+Rows are indexed from top to bottom; columns are zero-based. String fixtures
+are intentionally *not* gravity-validated so partial/scoring diagrams work.
 """
 from __future__ import annotations
 
@@ -13,88 +10,97 @@ from connect4 import config
 
 class Board:
     def __init__(self, rows: int = config.ROWS, cols: int = config.COLS) -> None:
-        """Create an empty rows x cols board."""
-        # TODO: store rows, cols and an empty grid
-        raise NotImplementedError
+        if type(rows) is not int or type(cols) is not int or rows < 1 or cols < 1:
+            raise ValueError("rows and cols must be positive integers")
+        self._rows = rows
+        self._cols = cols
+        self._grid = [[config.EMPTY for _ in range(cols)] for _ in range(rows)]
 
-    # ---- construction / conversion ----------------------------------------
     @classmethod
     def from_strings(cls, rows: list[str]) -> "Board":
-        """Build a board from top-to-bottom strings ('.', 'H', 'A'). Used heavily by tests."""
-        # TODO: validate equal row lengths and legal characters
-        raise NotImplementedError
+        if not rows or not isinstance(rows[0], str) or not rows[0]:
+            raise ValueError("provide at least one nonempty board row")
+        width = len(rows[0])
+        if any(not isinstance(row, str) or len(row) != width for row in rows):
+            raise ValueError("all board rows must have the same length")
+        char_to_cell = {".": config.EMPTY, "H": config.HUMAN, "A": config.AI}
+        if any(char not in char_to_cell for row in rows for char in row):
+            raise ValueError("board strings must contain only '.', 'H', and 'A'")
+        board = cls(len(rows), width)
+        board._grid = [[char_to_cell[char] for char in row] for row in rows]
+        return board
 
     def to_strings(self) -> list[str]:
-        """Inverse of from_strings."""
-        # TODO
-        raise NotImplementedError
+        cell_to_char = {config.EMPTY: ".", config.HUMAN: "H", config.AI: "A"}
+        return ["".join(cell_to_char[cell] for cell in row) for row in self._grid]
 
     def copy(self) -> "Board":
-        """Independent deep copy (minimax must never mutate the caller's board)."""
-        # TODO
-        raise NotImplementedError
+        clone = Board(self.rows, self.cols)
+        clone._grid = [row.copy() for row in self._grid]
+        return clone
 
     def swapped(self) -> "Board":
-        """Copy of the board with HUMAN and AI discs exchanged (used to test heuristic symmetry)."""
-        # TODO
-        raise NotImplementedError
+        clone = self.copy()
+        clone._grid = [
+            [config.AI if cell == config.HUMAN else config.HUMAN if cell == config.AI else cell
+             for cell in row]
+            for row in self._grid
+        ]
+        return clone
 
-    # ---- queries -----------------------------------------------------------
     @property
     def rows(self) -> int:
-        # TODO
-        raise NotImplementedError
+        return self._rows
 
     @property
     def cols(self) -> int:
-        # TODO
-        raise NotImplementedError
+        return self._cols
 
     def get(self, row: int, col: int) -> int:
-        """Value at (row, col)."""
-        # TODO
-        raise NotImplementedError
+        return self._grid[row][col]
 
     def is_valid_move(self, col: int) -> bool:
-        """True if col is in range and not full."""
-        # TODO
-        raise NotImplementedError
+        return type(col) is int and 0 <= col < self.cols and self._grid[0][col] == config.EMPTY
 
     def valid_moves(self) -> list[int]:
-        """Playable columns, ascending order."""
-        # TODO
-        raise NotImplementedError
+        return [col for col in range(self.cols) if self.is_valid_move(col)]
 
     def is_full(self) -> bool:
-        # TODO
-        raise NotImplementedError
+        return not self.valid_moves()
 
     def count_pieces(self, player: int | None = None) -> int:
-        """Discs of `player`, or all discs when player is None."""
-        # TODO
-        raise NotImplementedError
+        if player is not None and player not in (config.HUMAN, config.AI):
+            raise ValueError("player must be HUMAN or AI")
+        return sum(
+            cell != config.EMPTY if player is None else cell == player
+            for row in self._grid for cell in row
+        )
 
     def next_open_row(self, col: int) -> int | None:
-        """Row index a disc dropped in col would land on, or None if column is full."""
-        # TODO
-        raise NotImplementedError
+        if type(col) is not int or not 0 <= col < self.cols:
+            return None
+        return next((row for row in range(self.rows - 1, -1, -1)
+                     if self._grid[row][col] == config.EMPTY), None)
 
-    # ---- mutation ----------------------------------------------------------
     def drop_piece(self, col: int, player: int) -> int:
-        """Drop a disc in col (mutates). Returns the row it landed on.
-        Raises ValueError for an invalid / full column."""
-        # TODO
-        raise NotImplementedError
+        if player not in (config.HUMAN, config.AI):
+            raise ValueError("player must be HUMAN or AI")
+        if not self.is_valid_move(col):
+            raise ValueError(f"column {col} is invalid or full")
+        row = self.next_open_row(col)
+        assert row is not None  # guaranteed by is_valid_move for gravity-valid boards
+        self._grid[row][col] = player
+        return row
 
     def with_move(self, col: int, player: int) -> "Board":
-        """Return a NEW board with the move applied (handy for generating children)."""
-        # TODO
-        raise NotImplementedError
+        child = self.copy()
+        child.drop_piece(col, player)
+        return child
 
     def __eq__(self, other: object) -> bool:
-        # TODO
-        raise NotImplementedError
+        return (isinstance(other, Board) and self.rows == other.rows
+                and self.cols == other.cols and self._grid == other._grid)
 
     def __hash__(self) -> int:
-        # TODO: needed if you add a transposition table later
-        raise NotImplementedError
+        # Do not mutate a Board once it is being used as a dict/set key.
+        return hash((self.rows, self.cols, tuple(tuple(row) for row in self._grid)))
