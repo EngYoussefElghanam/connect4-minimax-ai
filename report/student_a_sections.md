@@ -75,8 +75,7 @@ a four does not end this assignment's game.
 ### 3.3 Difficulty parameter
 
 The program accepts a custom K or one of three configured levels:
-Easy K=2, Medium K=4, Hard K=6. Validation currently permits integer K in
-1..10, but large K can become computationally impractical and tree-printing
+Easy K=2, Medium K=4, Hard K=6. Validation permits any positive integer K with no upper limit, but large K can become computationally impractical and tree-printing
 can produce enormous output. The depth choice can be adjusted after runtime
 measurements.
 
@@ -128,3 +127,20 @@ baseline heuristic as your teammate's finished composite heuristic.
 8. Ordinary score-difference is sufficient to verify engine correctness; the
    final team heuristic may combine score, candidate windows, positional
    control and immediate threats, as implemented by the heuristic teammate.
+
+## Supplement: final interface and composite-heuristic benchmark
+
+Run `python main.py --gui`. Choose red or yellow, a heuristic, and type any positive integer K. The GUI shows the board, scores, search statistics and expandable tree; the terminal prints the entire explored tree with leaf boards, scores, alpha/beta and skipped siblings. Arrow keys pan horizontally. The sample in `sample_runs/composite_k2.txt` captures a real AI response to a human centre-column move.
+
+The composite heuristic adds 100 × score difference, 10 × open-window difference (1/5/20 points for one/two/three discs), 1 × positional difference (centre favoured), and 25 × immediate playable threat difference. Full-board utility is the actual score difference. Weights are design choices, not proven optimal.
+
+The following measurements use the same four fixed positions and methodology described above, but with the composite heuristic. Times exclude tree recording, printing and rendering.
+
+| K | Plain nodes | Alpha-beta nodes | Plain seconds | Alpha-beta seconds |
+|---:|---:|---:|---:|---:|
+| 1 | 8.0 | 8.0 | 0.0017 | 0.0018 |
+| 2 | 56.8 | 29.0 | 0.0122 | 0.0053 |
+| 3 | 394.2 | 96.5 | 0.0855 | 0.0183 |
+| 4 | 2714.8 | 324.8 | 0.5905 | 0.0554 |
+
+Raw CSV and plots: `benchmarks/results/`. GUI execution on the target Mac still needs local verification; no claim of optimal heuristic ranking is made.

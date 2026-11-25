@@ -12,8 +12,8 @@ class Difficulty(Enum):
 
 
 def validate_k(k: int) -> int:
-    if type(k) is not int or not config.MIN_K <= k <= config.MAX_K:
-        raise ValueError(f"K must be an integer from {config.MIN_K} to {config.MAX_K}")
+    if type(k) is not int or k < config.MIN_K:
+        raise ValueError(f"K must be an integer >= {config.MIN_K}")
     return k
 
 

@@ -20,7 +20,7 @@ def parse_column_input(raw: str, cols: int) -> int:
 
 
 def parse_k_input(raw: str) -> int:
-    """Custom K typed by the user; validated against [MIN_K, MAX_K]."""
+    """Custom K typed by the user; validated as a positive integer."""
     cleaned = raw.strip()
     try:
         k = int(cleaned)

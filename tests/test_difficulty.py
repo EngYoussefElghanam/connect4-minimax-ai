@@ -13,12 +13,12 @@ def test_k_increases_with_difficulty():
 
 @pytest.mark.parametrize("d", list(Difficulty))
 def test_difficulty_k_is_within_bounds(d):
-    assert config.MIN_K <= k_for_difficulty(d) <= config.MAX_K
+    assert config.MIN_K <= k_for_difficulty(d)
 
 
 def test_validate_k_accepts_bounds():
     assert validate_k(config.MIN_K) == config.MIN_K
-    assert validate_k(config.MAX_K) == config.MAX_K
+    assert validate_k(1000) == 1000
 
 
 @pytest.mark.parametrize("bad", [0, -3, 2.5])
@@ -27,9 +27,8 @@ def test_validate_k_rejects_bad_values(bad):
         validate_k(bad)
 
 
-def test_validate_k_rejects_above_max():
-    with pytest.raises(ValueError):
-        validate_k(config.MAX_K + 1)
+def test_validate_k_accepts_above_old_max():
+    assert validate_k(11) == 11
 
 
 @pytest.mark.parametrize("name,expected", [("easy", Difficulty.EASY), ("Medium", Difficulty.MEDIUM),

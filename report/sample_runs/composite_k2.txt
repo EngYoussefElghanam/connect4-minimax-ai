@@ -1,0 +1,178 @@
+
+. . . . . . .
+. . . . . . .
+. . . . . . .
+. . . . . . .
+. . . . . . .
+. . . . . . .
+1 2 3 4 5 6 7
+You (X): 0 | Computer (O): 0
+Your move (1-7, q to quit)>
+. . . . . . .
+. . . . . . .
+. . . . . . .
+. . . . . . .
+. . . . . . .
+. . . X . . .
+1 2 3 4 5 6 7
+You (X): 0 | Computer (O): 0
+Computer plays column 4 (minimax value -113)
+[MAX] root value=-113 alpha=-113 beta=inf
+    [MIN] col=4 value=-113 alpha=-inf beta=-113
+        [MAX] col=4 value=-94 alpha=-inf beta=inf leaf {score_diff: 0, open_windows: -90, positional: -4, threats: 0}
+            . . . . . . .
+            . . . . . . .
+            . . . . . . .
+            . . . X . . .
+            . . . O . . .
+            . . . X . . .
+            1 2 3 4 5 6 7
+        [MAX] col=3 value=-113 alpha=-inf beta=-94 leaf {score_diff: 0, open_windows: -110, positional: -3, threats: 0}
+            . . . . . . .
+            . . . . . . .
+            . . . . . . .
+            . . . . . . .
+            . . . O . . .
+            . . X X . . .
+            1 2 3 4 5 6 7
+        [MAX] col=5 value=-113 alpha=-inf beta=-113 leaf {score_diff: 0, open_windows: -110, positional: -3, threats: 0}
+            . . . . . . .
+            . . . . . . .
+            . . . . . . .
+            . . . . . . .
+            . . . O . . .
+            . . . X X . .
+            1 2 3 4 5 6 7
+        [MAX] col=2 value=-72 alpha=-inf beta=-113 leaf {score_diff: 0, open_windows: -70, positional: -2, threats: 0}
+            . . . . . . .
+            . . . . . . .
+            . . . . . . .
+            . . . . . . .
+            . . . O . . .
+            . X . X . . .
+            1 2 3 4 5 6 7
+        [MAX] col=6 value=-72 alpha=-inf beta=-113 leaf {score_diff: 0, open_windows: -70, positional: -2, threats: 0}
+            . . . . . . .
+            . . . . . . .
+            . . . . . . .
+            . . . . . . .
+            . . . O . . .
+            . . . X . X .
+            1 2 3 4 5 6 7
+        [MAX] col=1 value=-31 alpha=-inf beta=-113 leaf {score_diff: 0, open_windows: -30, positional: -1, threats: 0}
+            . . . . . . .
+            . . . . . . .
+            . . . . . . .
+            . . . . . . .
+            . . . O . . .
+            X . . X . . .
+            1 2 3 4 5 6 7
+        [MAX] col=7 value=-31 alpha=-inf beta=-113 leaf {score_diff: 0, open_windows: -30, positional: -1, threats: 0}
+            . . . . . . .
+            . . . . . . .
+            . . . . . . .
+            . . . . . . .
+            . . . O . . .
+            . . . X . . X
+            1 2 3 4 5 6 7
+    [MIN] col=3 value=-155 alpha=-113 beta=-155
+        [MAX] col=4 value=-155 alpha=-113 beta=inf leaf {score_diff: 0, open_windows: -150, positional: -5, threats: 0}
+            . . . . . . .
+            . . . . . . .
+            . . . . . . .
+            . . . . . . .
+            . . . X . . .
+            . . O X . . .
+            1 2 3 4 5 6 7
+        [MAX] col=3 PRUNED
+        [MAX] col=5 PRUNED
+        [MAX] col=2 PRUNED
+        [MAX] col=6 PRUNED
+        [MAX] col=1 PRUNED
+        [MAX] col=7 PRUNED
+    [MIN] col=5 value=-155 alpha=-113 beta=-155
+        [MAX] col=4 value=-155 alpha=-113 beta=inf leaf {score_diff: 0, open_windows: -150, positional: -5, threats: 0}
+            . . . . . . .
+            . . . . . . .
+            . . . . . . .
+            . . . . . . .
+            . . . X . . .
+            . . . X O . .
+            1 2 3 4 5 6 7
+        [MAX] col=3 PRUNED
+        [MAX] col=5 PRUNED
+        [MAX] col=2 PRUNED
+        [MAX] col=6 PRUNED
+        [MAX] col=1 PRUNED
+        [MAX] col=7 PRUNED
+    [MIN] col=2 value=-166 alpha=-113 beta=-166
+        [MAX] col=4 value=-166 alpha=-113 beta=inf leaf {score_diff: 0, open_windows: -160, positional: -6, threats: 0}
+            . . . . . . .
+            . . . . . . .
+            . . . . . . .
+            . . . . . . .
+            . . . X . . .
+            . O . X . . .
+            1 2 3 4 5 6 7
+        [MAX] col=3 PRUNED
+        [MAX] col=5 PRUNED
+        [MAX] col=2 PRUNED
+        [MAX] col=6 PRUNED
+        [MAX] col=1 PRUNED
+        [MAX] col=7 PRUNED
+    [MIN] col=6 value=-166 alpha=-113 beta=-166
+        [MAX] col=4 value=-166 alpha=-113 beta=inf leaf {score_diff: 0, open_windows: -160, positional: -6, threats: 0}
+            . . . . . . .
+            . . . . . . .
+            . . . . . . .
+            . . . . . . .
+            . . . X . . .
+            . . . X . O .
+            1 2 3 4 5 6 7
+        [MAX] col=3 PRUNED
+        [MAX] col=5 PRUNED
+        [MAX] col=2 PRUNED
+        [MAX] col=6 PRUNED
+        [MAX] col=1 PRUNED
+        [MAX] col=7 PRUNED
+    [MIN] col=1 value=-177 alpha=-113 beta=-177
+        [MAX] col=4 value=-177 alpha=-113 beta=inf leaf {score_diff: 0, open_windows: -170, positional: -7, threats: 0}
+            . . . . . . .
+            . . . . . . .
+            . . . . . . .
+            . . . . . . .
+            . . . X . . .
+            O . . X . . .
+            1 2 3 4 5 6 7
+        [MAX] col=3 PRUNED
+        [MAX] col=5 PRUNED
+        [MAX] col=2 PRUNED
+        [MAX] col=6 PRUNED
+        [MAX] col=1 PRUNED
+        [MAX] col=7 PRUNED
+    [MIN] col=7 value=-177 alpha=-113 beta=-177
+        [MAX] col=4 value=-177 alpha=-113 beta=inf leaf {score_diff: 0, open_windows: -170, positional: -7, threats: 0}
+            . . . . . . .
+            . . . . . . .
+            . . . . . . .
+            . . . . . . .
+            . . . X . . .
+            . . . X . . O
+            1 2 3 4 5 6 7
+        [MAX] col=3 PRUNED
+        [MAX] col=5 PRUNED
+        [MAX] col=2 PRUNED
+        [MAX] col=6 PRUNED
+        [MAX] col=1 PRUNED
+        [MAX] col=7 PRUNED
+nodes expanded: 21 | prunes: 6 | time: 0.007s
+
+. . . . . . .
+. . . . . . .
+. . . . . . .
+. . . . . . .
+. . . O . . .
+. . . X . . .
+1 2 3 4 5 6 7
+You (X): 0 | Computer (O): 0
+Your move (1-7, q to quit)> Game aborted.

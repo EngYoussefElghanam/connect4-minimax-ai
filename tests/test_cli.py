@@ -28,7 +28,7 @@ def test_menu_reprompts_on_garbage(monkeypatch):
 
 
 def test_custom_k_flow_reprompts_until_valid(monkeypatch):
-    feed(monkeypatch, ["4", "0", "abc", str(config.MAX_K + 1), "3"])
+    feed(monkeypatch, ["4", "0", "abc", "3"])
     assert cli.prompt_difficulty_and_k() == 3
 
 

@@ -9,7 +9,7 @@ connect4-minimax/
 ├── main.py                     # entry point (CLI args -> console or GUI)
 ├── pytest.ini / requirements.txt
 ├── src/connect4/
-│   ├── config.py               # constants: board size, players, K bounds, difficulty->K map
+│   ├── config.py               # constants: board size, players, minimum K, difficulty->K map
 │   ├── board.py                # Board: grid, gravity drops, copy, helpers
 │   ├── scoring.py              # count connected-fours, winner by greater count
 │   ├── game.py                 # Game controller: turns, game over, result
@@ -32,7 +32,7 @@ connect4-minimax/
 
 ```bash
 pip install -r requirements.txt
-pytest                # everything fails at first -> that's the TODO list
+pytest                # run the automated tests
 python main.py        # console
 python main.py --gui  # GUI
 ```
@@ -49,3 +49,7 @@ python main.py --gui  # GUI
 8. `ui/console/*`    -> `tests/test_input_parsing.py`, `tests/test_console_render.py`
 9. `benchmarks/`     -> `tests/test_benchmark.py`
 10. `ui/gui/*`       -> `tests/test_gui_smoke.py`
+
+## GUI controls
+
+Click the K field and type any positive integer (no maximum). Choose a heuristic and disc colour, then Start. Every AI turn prints the full explored tree and evaluated leaf boards to the terminal. Click tree nodes to expand, scroll vertically, or use Left/Right to pan. Large K can take impractically long and use substantial memory; start with K=1–4.

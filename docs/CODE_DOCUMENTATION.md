@@ -20,7 +20,7 @@ Global constants only, with no functions. Every tunable number lives here so the
 | `ROWS`, `COLS` | Board size (6 x 7). |
 | `CONNECT` | Discs needed for one "connected four" (4). |
 | `EMPTY`, `HUMAN`, `AI` | Integer codes for cell contents. |
-| `MIN_K`, `MAX_K` | Allowed search depth range (1 to 10). |
+| `MIN_K` | Minimum search depth (1); no maximum. |
 | `DIFFICULTY_K` | Maps difficulty name to search depth (`EASY`=2, `MEDIUM`=4, `HARD`=6). |
 | `HEURISTIC_WEIGHTS` | Weights used by `CompositeHeuristic` for each sub-heuristic. |
 
@@ -113,7 +113,7 @@ Returns `config.AI` if the difference is positive, `config.HUMAN` if negative an
 Three members, `EASY`, `MEDIUM` and `HARD`, whose values equal their names so they can be used as keys of `config.DIFFICULTY_K`.
 
 ### `validate_k(k)`
-Returns `k` unchanged if it is an `int` (not a bool) within `[MIN_K, MAX_K]`; otherwise raises `ValueError`. The chained comparison `config.MIN_K <= k <= config.MAX_K` is standard Python.
+Returns `k` unchanged if it is an `int` (not a bool) at least `MIN_K`; otherwise raises `ValueError`.
 
 ### `k_for_difficulty(difficulty)`
 Looks up the depth for a `Difficulty` member and validates it. It raises `ValueError` if the argument isn't a `Difficulty`.

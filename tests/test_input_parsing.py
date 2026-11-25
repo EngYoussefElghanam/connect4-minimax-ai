@@ -20,10 +20,10 @@ def test_bad_columns_raise(raw):
 def test_valid_custom_k():
     assert parse_k_input("3") == 3
     assert parse_k_input(f" {config.MIN_K} ") == config.MIN_K
-    assert parse_k_input(str(config.MAX_K)) == config.MAX_K
+    assert parse_k_input("1000") == 1000
 
 
-@pytest.mark.parametrize("raw", ["0", "-1", "abc", "", "2.5", str(config.MAX_K + 1)])
+@pytest.mark.parametrize("raw", ["0", "-1", "abc", "", "2.5"])
 def test_bad_custom_k_raises(raw):
     with pytest.raises(ValueError):
         parse_k_input(raw)
