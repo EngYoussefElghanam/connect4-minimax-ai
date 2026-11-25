@@ -75,7 +75,7 @@ We only include a window when its ending coordinate stays inside the grid. On a 
 
 ## 3. Difficulty and statistics (4 functions)
 
-`difficulty.py`: `validate_k` accepts only an integer in the configured range, `difficulty_from_name` converts text to an enum, and `k_for_difficulty` converts EASY/MEDIUM/HARD to their K depths (currently 2/4/6). The default maximum **10** is a validation limit, not a promise that searching or printing K=10 will be fast.
+`difficulty.py`: `validate_k` accepts only a positive integer, `difficulty_from_name` converts text to an enum, and `k_for_difficulty` converts EASY/MEDIUM/HARD to their K depths (currently 2/4/6). There is no maximum K; searching or printing K=10 may be very slow.
 
 `stats.py`: `SearchStats.reset()` zeroes `nodes_expanded`, `leaf_evaluations`, `prunes`, `elapsed_seconds`, and `max_depth_reached` so every computer turn has independent measurements.
 

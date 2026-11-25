@@ -39,7 +39,7 @@ def prompt_difficulty_and_k() -> int:
             return k_for_difficulty(difficulty)
         while True:
             try:
-                return parse_k_input(input(f"K ({config.MIN_K}-{config.MAX_K})> "))
+                return parse_k_input(input(f"K (>= {config.MIN_K})> "))
             except ValueError as exc:
                 print(f"Invalid K: {exc}")
 
@@ -82,7 +82,7 @@ def print_computer_turn(game: Game, result: SearchResult, tree_depth: int | None
     """Print the chosen column, the minimax tree and the search stats."""
     print(f"Computer plays column {result.column + 1} (minimax value {result.value:g})")
     if show_tree and result.tree is not None:
-        print(format_tree(result.tree, max_depth=tree_depth))
+        print(format_tree(result.tree, max_depth=tree_depth, show_boards=True))
     s = result.stats
     print(render_stats(s.nodes_expanded, s.elapsed_seconds, s.prunes))
 
@@ -114,7 +114,7 @@ def run_console_game(k: int | None = None, heuristic_name: str | None = None,
                 result = game.computer_move()
                 print_computer_turn(game, result, tree_depth)
                 if tree_file and result.tree is not None:
-                    write_tree_to_file(result.tree, tree_file)
+                    write_tree_to_file(result.tree, tree_file, show_boards=True)
     except QuitGame:
         print("Game aborted.")
         return None

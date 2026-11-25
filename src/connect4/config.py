@@ -12,7 +12,7 @@ AI = 2
 
 # --- Search depth (K) --------------------------------------------------------
 MIN_K = 1
-MAX_K = 10        # TODO: decide an upper bound that keeps the UI responsive
+# No application-imposed maximum; search ends at a full board.
 
 # TODO: tune these after running benchmarks/k_analysis.py
 DIFFICULTY_K = {

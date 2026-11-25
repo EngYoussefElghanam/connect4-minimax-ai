@@ -24,6 +24,8 @@ class BoardView:
         self.rows = rows
         self.cols = cols
         self.radius = cell // 2 - theme.DISC_PADDING
+        self.colours = dict(_COLOURS)
+        self.font = pygame.font.Font(None, 21)
 
     def column_at(self, pos: tuple[int, int]) -> int | None:
         """Column under the mouse (the strip above the board counts too), else None."""
@@ -31,7 +33,7 @@ class BoardView:
         ox, oy = self.origin
         if not (ox <= x < ox + self.cols * self.cell):
             return None
-        if not (oy - self.cell <= y < oy + self.rows * self.cell):
+        if not (oy - 39 <= y < oy + self.rows * self.cell):
             return None
         return (x - ox) // self.cell
 
@@ -45,15 +47,29 @@ class BoardView:
             surface, theme.BOARD_BLUE,
             (ox, oy, self.cols * self.cell, self.rows * self.cell), border_radius=12,
         )
-        for r in range(self.rows):
-            for c in range(self.cols):
-                pygame.draw.circle(surface, _COLOURS[board.get(r, c)], self._centre(r, c), self.radius)
-        if hover_col is not None:
-            x = ox + hover_col * self.cell + self.cell // 2
-            pygame.draw.circle(surface, theme.HUMAN_COLOUR, (x, oy - self.cell // 2), self.radius)
+        for c in range(self.cols):
+            x = self._centre(0, c)[0]
+            selected = hover_col == c and board.is_valid_move(c)
+            if selected:
+                pygame.draw.rect(surface, self.colours[config.HUMAN],
+                                 (x - 17, oy - 36, 34, 28), border_radius=10)
+            number = self.font.render(str(c + 1), True, theme.TEXT)
+            surface.blit(number, number.get_rect(center=(x, oy - 22)))
+            for r in range(self.rows):
+                center = self._centre(r, c)
+                player = board.get(r, c)
+                pygame.draw.circle(surface, theme.HOLE, center, self.radius)
+                if player != config.EMPTY:
+                    self._disc(surface, center, player)
+
+    def _disc(self, surface, center, player):
+        colour = self.colours[player]
+        pygame.draw.circle(surface, colour, center, self.radius - 3)
+        ring = tuple(int(channel * .79) for channel in colour)
+        pygame.draw.circle(surface, ring, center, self.radius - 10, 2)
 
     def animate_drop(self, surface: pygame.Surface, board: Board, col: int, player: int,
-                     redraw: Callable[[], None]) -> None:
+                     redraw: Callable[[], None], present=pygame.display.flip) -> None:
         """Animate a disc falling into `col`.
 
         `board` must be the position BEFORE the disc is placed, and `redraw`
@@ -64,7 +80,7 @@ class BoardView:
             return
         ox, oy = self.origin
         x = ox + col * self.cell + self.cell // 2
-        y = float(oy - self.cell // 2)
+        y = float(oy - 14)
         target = self._centre(row, col)[1]
         velocity = 0.0
         clock = pygame.time.Clock()
@@ -73,6 +89,6 @@ class BoardView:
             velocity += theme.GRAVITY
             y = min(y + velocity, target)
             redraw()
-            pygame.draw.circle(surface, _COLOURS[player], (x, int(y)), self.radius)
-            pygame.display.flip()
+            self._disc(surface, (x, int(y)), player)
+            present()
             clock.tick(theme.FPS)

@@ -16,7 +16,7 @@ def agent(k, **kw):
     return MinimaxAgent(ScoreDifferenceHeuristic(), k=k, **kw)
 
 
-@pytest.mark.parametrize("bad_k", [0, -1, config.MAX_K + 1])
+@pytest.mark.parametrize("bad_k", [0, -1, True])
 def test_invalid_k_rejected(bad_k):
     with pytest.raises(ValueError):
         agent(bad_k)
@@ -76,3 +76,10 @@ def test_root_value_reaches_terminal_utility_on_nearly_full_board():
     rows[0] = rows[0][:6] + "."
     r = agent(5).choose_move(B(rows))
     assert r.column == 6
+
+
+def test_unbounded_k_stops_at_full_board():
+    rows = ["HAHAHA.", "AHAHAH.", "HAHAHA.", "AHAHAH.", "HAHAHA.", "AHAHAH."]
+    result = agent(1000).choose_move(B(rows))
+    assert result.column == 6
+    assert result.stats.max_depth_reached == 6
